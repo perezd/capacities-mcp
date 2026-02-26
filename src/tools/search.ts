@@ -12,20 +12,21 @@ export const searchTool = {
 	execute: async (args: {
 		searchTerm: string;
 		spaceIds: string[];
-		mode?: "fullText" | "title";
 		filterStructureIds?: string[];
 	}) => {
 		try {
+			// Use the first spaceId — the /lookup endpoint takes a single spaceId
+			const spaceId = args.spaceIds[0];
+
 			const requestBody = {
 				searchTerm: args.searchTerm,
-				spaceIds: args.spaceIds,
-				...(args.mode && { mode: args.mode }),
+				spaceId,
 				...(args.filterStructureIds && {
 					filterStructureIds: args.filterStructureIds,
 				}),
 			};
 
-			const response = await makeApiRequest("/search", {
+			const response = await makeApiRequest("/lookup", {
 				method: "POST",
 				body: JSON.stringify(requestBody),
 			});
@@ -44,11 +45,6 @@ export const searchTool = {
 		spaceIds: z
 			.array(z.string().uuid())
 			.describe("Array of space UUIDs to search in"),
-		mode: z
-			.enum(["fullText", "title"])
-			.optional()
-			.describe("Search mode: fullText or title only")
-			.default("title"),
 		filterStructureIds: z
 			.array(z.string().uuid())
 			.optional()

@@ -30,8 +30,7 @@ cp .env.example .env
 
 - `capacities_list_spaces` - Get user's personal spaces
 - `capacities_get_space_info` - Get structures and collections for a space
-- `capacities_search` - Search content across spaces
-  - `mode` defaults to "title" if not specified
+- `capacities_search` - Search content across spaces (title-based lookup)
 - `capacities_save_weblink` - Save a web link to a space
   - Parameters: `titleOverwrite`, `descriptionOverwrite`, `tags`, `mdText`
 - `capacities_save_to_daily_note` - Add text to today's daily note
