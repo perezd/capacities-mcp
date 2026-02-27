@@ -14,61 +14,62 @@ This MCP server provides access to all current Capacities API endpoints:
 
 ## Installation
 
-### For Claude Desktop
+1. Install [Bun](https://bun.sh) if you haven't already:
+```bash
+curl -fsSL https://bun.sh/install | bash
+```
 
-Add the Capacities MCP server to your Claude Desktop configuration (`~/Library/Application Support/Claude/claude_desktop_config.json` on macOS):
+2. Clone this repository:
+```bash
+git clone https://github.com/perezd/capacities-mcp.git
+cd capacities-mcp
+```
+
+3. Install dependencies:
+```bash
+bun install
+```
+
+4. Configure the MCP server for your client:
+
+Replace `/path/to/capacities-mcp` below with the actual path where you cloned the repository.
+
+The server requires the `CAPACITIES_API_KEY` environment variable to be set. Get your API key from your [Capacities account settings](https://capacities.io/).
+
+#### Claude Code
+
+```bash
+claude mcp add capacities-mcp -e CAPACITIES_API_KEY=your_api_key_here -- bun run /path/to/capacities-mcp/src/server.ts
+```
+
+#### Claude Desktop
+
+Add the following to your Claude Desktop configuration (`~/Library/Application Support/Claude/claude_desktop_config.json` on macOS):
 
 ```json
 {
   "mcpServers": {
-    "capacities": {
-      "command": "npx",
-      "args": ["-y", "capacities-mcp"],
+    "capacities-mcp": {
+      "type": "stdio",
+      "command": "bun",
+      "args": [
+        "run",
+        "/path/to/capacities-mcp/src/server.ts"
+      ],
       "env": {
-        "CAPACITIES_API_KEY": "your_capacities_api_key_here"
+        "CAPACITIES_API_KEY": "your_api_key_here"
       }
     }
   }
 }
 ```
 
-Get your Capacities API key from your [Capacities account settings](https://capacities.io/).
-
-That's it! The server will be automatically downloaded and run when Claude Desktop starts.
-
 ## Development
 
-### Local Setup
-
-For local development, you'll need to clone and build the project:
-
-1. Clone this repository:
-```bash
-git clone https://github.com/jemgold/capacities-mcp.git
-cd capacities-mcp
-```
-
-2. Install dependencies:
-```bash
-bun install
-```
-
-3. Copy the example environment file:
+Copy the example environment file and add your API key:
 ```bash
 cp .env.example .env
 ```
-
-4. Add your Capacities API key to `.env`:
-```
-CAPACITIES_API_KEY=your_api_key_here
-```
-
-5. Build the server:
-```bash
-bun run build
-```
-
-### Running the Server
 
 Start the development server with interactive mode:
 ```bash
